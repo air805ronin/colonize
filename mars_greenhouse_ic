@@ -1,0 +1,47 @@
+alias Sensor1 d0
+alias TempM d1
+alias PressureM d2
+alias Intake d3
+alias Exhaust d4
+alias Heater d5
+
+alias CurrentPress r0
+alias CurrentTemp r1
+alias IdealPress r2
+alias IdealTemp r3
+
+l CurrentPress Sensor1 Pressure
+l CurrentTemp Sensor1 Temperature
+l IdealPress PressureM Setting
+l IdealTemp TempM Setting
+
+loop:
+blt CurrentTemp IdealTemp lowtemp
+j1:
+bgt CurrentTemp IdealTemp hightemp
+j2:
+blt CurrentPress IdealPress lowpress
+j3:
+bgt CurrentPress IdealPress highpress
+j4:
+j loop
+
+lowtemp:
+s Heater On 1
+s Intake On 0
+j j1
+
+hightemp:
+s Heater On 0
+s Intake On 1
+j j2
+
+lowpress:
+s Intake On 1
+s Exhaust On 0
+j j3
+
+highpress:
+s Intake On 0
+s Exhaust On 1
+j j4
