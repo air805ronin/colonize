@@ -32,21 +32,17 @@ j loop
 
 lowtemp:
 s Heater On 1
-s Intake On 0
 j j1
 
 hightemp:
-s Heater On 0
 s Intake On 1
 j j2
 
 lowpress:
 s Intake On 1
-s Exhaust On 0
 j j3
 
 highpress:
-s Intake On 0
 s Exhaust On 1
 j j4
 
