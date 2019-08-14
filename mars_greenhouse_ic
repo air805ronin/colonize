@@ -24,6 +24,10 @@ blt CurrentPress IdealPress lowpress
 j3:
 bgt CurrentPress IdealPress highpress
 j4:
+beq CurrentTemp IdealTemp equaltemp
+j5:
+beq CurrentPress IdealPress equalpress
+j6:
 j loop
 
 lowtemp:
@@ -45,3 +49,13 @@ highpress:
 s Intake On 0
 s Exhaust On 1
 j j4
+
+equaltemp:
+s Heater On 0
+s Intake On 0
+j j5
+
+equalpress:
+s Intake On 0
+s Exhaust On 0
+j j6
