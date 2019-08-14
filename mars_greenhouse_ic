@@ -10,12 +10,12 @@ alias CurrentTemp r1
 alias IdealPress r2
 alias IdealTemp r3
 
-l CurrentPress Sensor1 Pressure
-l CurrentTemp Sensor1 Temperature
 l IdealPress PressureM Setting
 l IdealTemp TempM Setting
 
 loop:
+l CurrentPress Sensor1 Pressure
+l CurrentTemp Sensor1 Temperature
 blt CurrentTemp IdealTemp lowtemp
 j1:
 bgt CurrentTemp IdealTemp hightemp
