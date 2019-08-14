@@ -11,14 +11,20 @@ s Sensor1 Mode 0
 s Sensor2 Mode 1
 
 loop:
+# pull angles
 l AngleV Sensor1 SolarAngle
 l AngleH Sensor2 SolarAngle
+# check for daylight
 l Daylight Sensor1 Activate
+# jump processing if night
 beqzal Daylight night
+# vertical angle math
 sub AngleV 75 AngleV 
 div AngleV AngleV 1.5
+# set memory with angles
 s BatchV Setting AngleV
 s BatchH Setting AngleH
+
 yield
 night:
 j loop
