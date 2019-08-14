@@ -1,0 +1,24 @@
+alias Sensor1 d0
+alias Sensor2 d1
+alias BatchH d2
+alias BatchV d3
+alias AngleV r0
+alias AngleH r1
+alias Daylight r2
+
+setup:
+s Sensor1 Mode 0
+s Sensor2 Mode 1
+
+loop:
+l AngleV Sensor1 SolarAngle
+l AngleH Sensor2 SolarAngle
+l Daylight Sensor1 Activate
+beqzal Daylight night
+sub AngleV 75 AngleV 
+div AngleV AngleV 1.5
+s BatchV Setting AngleV
+s BatchH Setting AngleH
+yield
+night:
+j loop
