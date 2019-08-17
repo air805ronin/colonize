@@ -1,0 +1,91 @@
+alias Furnace d0
+alias Switch d1
+alias Mixer d2
+alias ExhaustPump d3
+alias SelectionMem d4
+
+alias selection r1
+alias targetpress r2
+alias targettemp r3
+alias pressure r4
+alias temp r5
+alias switch r6
+add r7 r7 1
+add r8 r8 2
+add r9 r9 3
+add r10 r10 4
+add r11 r11 5
+
+start:
+l switch Switch Activate
+l selection SelectionMem Setting
+bgtz switch case
+yield
+j start
+
+case:
+beq selection r7 steel
+beq selection r8 electrum
+beq selection r9 solder
+beq selection r10 invar
+beq selection r11 constantan
+j start
+
+steel:
+add targetpress targetpress 100
+add targettemp targettemp 600
+j furnaceon
+
+electrum:
+add targetpress targetpress 800
+add targettemp targettemp 700
+j furnaceon
+
+solder:
+add targetpress targetpress 300
+add targettemp targettemp 1000
+j furnaceon
+
+invar:
+add targetpress targetpress 6000
+add targettemp targettemp 1200
+j furnaceon
+
+constantan:
+add targetpress targetpress 100
+add targettemp targettemp 300
+
+furnaceon:
+s Mixer On 1
+s Furnace On 1
+l pressure Furnace Pressure
+l temp Furnace Temperature
+l switch Switch Activate
+beqz switch reset
+bgt pressure targetpress furnaceoff
+bgt temp targettemp furnaceoff
+j furnaceon
+
+furnaceoff:
+s Mixer On 0
+s Furnace On 0
+l pressure Furnace Pressure
+l temp Furnace Temperature
+l switch Switch Activate
+beqz switch reset
+blt pressure targetpress furnaceon
+blt temp targettemp furnaceon
+j furnaceoff
+
+reset:
+s Mixer On 0
+s Furnace On 0
+seqz targetpress 0
+seqz targettemp 0
+
+depressurize:
+s ExhaustPump On 1
+l pressure Furnace Pressure
+bgt pressure targetpress depressurize
+yield
+j start
